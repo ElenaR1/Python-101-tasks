@@ -76,6 +76,7 @@ def log(file_name):
             f = open(file_name, "a")
             f.write(msg)
             f.close()
+            return func()
         return decorated_func
     return wrapper
 
@@ -147,7 +148,7 @@ def main():
     # print(say_hello("Polly"))
     # print(deposit("Roza", 10))
 
-    get_low()  
+    print(get_low())  
 
     print(something_heavy())
     # say_whee()
