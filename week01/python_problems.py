@@ -349,7 +349,7 @@ print(max_consecutive([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5]))
 
 
 #Word counter
-print('Word counter')
+print('=========Word counter=========')
 
 def transpose(matrix):
     transposed_matrix = [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
@@ -362,13 +362,15 @@ def contains(word,row):
     count+= s.count(word)
     reversed_word=word[::-1]
     count+= s.count(reversed_word)
+    # if count !=0:
+    #     print(s,count)
     return count
 
 def get_diagonal(mat, bltr = True):
       dim = len(mat)
       #assert dim == len(mat[0])
       lst = [[] for total in range(2 * len(mat) - 1)] 
-      print('lst',lst)
+      #print('lst',lst)
       for row in range(len(mat)):
         for col in range(len(mat[row])):
           if bltr: 
@@ -379,7 +381,7 @@ def get_diagonal(mat, bltr = True):
       return lst
 
 def check_diagonals(word,rows,cols,matrix):
-    print('in check_diagonals')
+    #print('in check_diagonals')
     reversed_word=word[::-1]
     left_to_right=get_diagonal(matrix,True)
     right_to_left=get_diagonal(matrix,False)
@@ -403,14 +405,14 @@ def check_diagonals(word,rows,cols,matrix):
 
 
 def check_rows(word,rows,cols,matrix):
-    print('in check_rows')
+    #print('in check_rows')
     count=0
     for i in range(rows):
         count+=contains(word,matrix[i])
     return count
 
 def check_cols(word,rows,cols,matrix):
-    print('in check_cols')
+    #print('in check_cols')
     transposed_matrix=transpose(matrix)
     #print('transposed_matrix',transposed_matrix)
     count=0
@@ -418,27 +420,68 @@ def check_cols(word,rows,cols,matrix):
         count+=contains(word,transposed_matrix[i])
     return count 
 
+def make_nxn(rows,cols,mat):
+    if rows > cols:
+        diff=rows-cols
+        for i in range(rows):
+            for k in range(diff):
+                mat[i].append('')
+        return mat
+    if cols > rows:
+        diff=cols-rows
+        l=[]
+        for i in range(cols):
+            l.append('')
+        for i in range(diff):
+                 mat.append(l)
+        return mat
+
+
 
 def word_counter(word,rows,cols,mat):
+    if rows != cols:
+        mat=make_nxn(rows,cols,mat)
+    #print(mat)
     n=len(word)
     if n>rows or n > cols:
         msg="not a valid input"
         return msg
     count=0
     count=check_rows(word,rows,cols,mat)+check_cols(word,rows,cols,mat)+check_diagonals(word,rows,cols,mat)
-    print('rows and cols and diagonals',check_rows(word,rows,cols,mat),check_cols(word,rows,cols,mat),check_diagonals(word,rows,cols,mat))
+    #print('rows and cols and diagonals',check_rows(word,rows,cols,mat),check_cols(word,rows,cols,mat),check_diagonals(word,rows,cols,mat))
+    if palindrome(word)==True:
+        count=count/2
     return count
 
 
 mat=[['i','v','a','n'],['i','p','o','a'],['t','v','a','v'],['k','o','a','i']]
-print(get_diagonal(mat,True))
-print(get_diagonal(mat,False))
-print(word_counter('iva',4,4,mat))
+
+print(word_counter('iva',4,4,mat))#3
 print('=====================')
 mat2=[['i','v','a','n'],
       ['e','v','n','h'],
       ['i','n','a','v'],
       ['m','v','v','n'],
       ['q','r','i','t']]
-#rint(word_counter('ivan',5,4,mat2))
 
+print(word_counter('ivan',5,4,mat2))
+print('=====================')
+
+mat3=[['i','v','a','n','n','k'],
+      ['e','v','n','h','a','p'],
+      ['i','n','a','v','v','r'],
+      ['m','v','v','n','i','d']]
+
+print(word_counter('ivan',4,6,mat3))
+print('=====================')
+
+
+mat4=[['z','v','a','n','q','h','r','e','z','g','t','z'],
+      ['e','v','m','h','t','r','x','e','k','y','m','a'],
+      ['i','a','c','a','u','a','l','l','y','a','c','x'],
+      ['m','v','c','n','d','u','a','m','d','t','l','u'],
+      ['q','t','i','t','w','a','a','a','u','p','r','x'],
+      ['p','e','m','a','d','a','m','l','l','y','w','p'],
+      ['o','y','h','t','e','e','l','u','f','p','q','n'],
+      ['p','a','c','t','u','a','l','l','y','u','r','e']]
+print(word_counter('madam',8,12,mat4))
